@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .delete-button, .update-button, .back-link {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .delete-button {
+            background-color: red;
+            color: white;
+        }
+
+        .delete-button:hover {
+            background-color: darkred;
+        }
+
+        .update-button {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .update-button:hover {
+            background-color: #218838; /* Darker shade of green on hover */
+        }
+
+        .back-link {
+            color: #007bff; /* Blue color */
+        }
+
+        .back-link:hover {
+            color: #0056b3; /* Darker shade of blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ blogs.title }}</h1>
+        <p>{{ blogs.description }}</p>
+        {% if blogs.image %}
+            <img src="{{ blogs.image.url }}" alt="Blog Image">
+        {% endif %}
+
+        <div class="button-container">
+            <a href="{% url 'index' %}" class="back-link">Back to All Blogs</a>
+            <a href="{% url 'update' blogs.pk %}" class="update-button">Update</a>
+            <a href="{% url 'delete' blogs.pk %}" class="delete-button">Delete</a>
+        </div>
+    </div>
+</body>
+</html>

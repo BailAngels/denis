@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>НОВОСТИ</title>
+    <style>
+        /* Style for the blog list */
+        .blog-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .blog-item {
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .blog-image {
+            width: 400px;
+            height: 400px;
+            object-fit: cover; /* Ensure the image covers the entire space */
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .blog-content {
+            padding: 20px;
+        }
+
+        .blog-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .blog-description {
+            color: #666;
+        }
+
+        .blog-date {
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'create' %}" class="create-button">Create New Blog Post</a>
+    <ul class="blog-list">
+        {% for blog in blogs %}
+        <li class="blog-item">
+            <a href="{% url 'detail' blog.pk %}" class="blog-link">
+                <img src="{{ blog.image.url }}" class="blog-image" alt="{{ blog.title }}">
+            </a>
+            <div class="blog-content">
+                <h2 class="blog-title"><a href="{% url 'detail' blog.pk %}" class="blog-link">{{ blog.title }}</a></h2>
+                <p class="blog-description">{{ blog.description }}</p>
+                <p class="blog-date">Published on {{ blog.created_at }}</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <style>
+        .create-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .create-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</body>
+</html>
