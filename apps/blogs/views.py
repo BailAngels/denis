@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 
 from apps.blogs.models import Blog
+from apps.tags.models import Tag
 
 
 def homepage(request):
@@ -13,7 +14,15 @@ def create(request):
         name = request.POST.get('title')
         text = request.POST.get('description')
         photo = request.FILES.get('image')
-        blog = Blog.objects.create(title=name,description=text,image=photo)
+        tags = request.POST.get('tags')
+        blog_create = Blog.objects.create(title=name,description=text,image=photo)
+        if len(tags)!= 0:
+            try:
+                tag_get = Tag.objects.get(title = tags)
+                tag_get.blog.add(blog_create)
+            except:
+                tag_obj = Tag.objects.create(title = tags)
+                tag_obj.blog.add(blog_create)
         return redirect('index')
     return render(request,'create.html')
 
