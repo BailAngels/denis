@@ -9,7 +9,7 @@ class Tag(models.Model):
     )
     blog=models.ManyToManyField(
         Blog,
-        related_name='tag',
+        related_name='tags',
         verbose_name='Cвязь блогам',
     )
 

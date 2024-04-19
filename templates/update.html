@@ -3,21 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Blog Post</title>
+    <title>Update Blog</title>
 </head>
 <body>
-    <h1>Update Blog Post</h1>
-    <form method="post" enctype="multipart/form-data">
+    <h1>Update Blog</h1>
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title" value="{{ blog.title }}"><br><br>
-
+        
         <label for="description">Description:</label><br>
         <textarea id="description" name="description">{{ blog.description }}</textarea><br><br>
-
+        
         <label for="image">Image:</label><br>
         <input type="file" id="image" name="image"><br><br>
+        
+        <label for="tags_input">Tags (comma-separated):</label><br>
+        <input type="text" id="tags_input" name="tags_input" value="{{ tag_titles }}"><br><br>
 
+        <h2>Existing Tags:</h2>
+        {% for tag in tags %}
+            <label for="tag_{{ tag.id }}">Tag: {{ tag.title }}</label>
+            <input type="text" id="tag_{{ tag.id }}" name="tag_{{ tag.id }}" value="{{ tag.title }}"><br>
+        {% endfor %}
+        
         <input type="submit" value="Update">
     </form>
 </body>

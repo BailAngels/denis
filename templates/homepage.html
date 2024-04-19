@@ -45,10 +45,24 @@
             color: #888;
             font-style: italic;
         }
+
+        .blog-tags {
+            margin-top: 10px;
+        }
+
+        .blog-tag {
+            display: inline-block;
+            background-color: #f2f2f2;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
     <a href="{% url 'create' %}" class="create-button">Create New Blog Post</a>
+    <a href="{% url 'tag_index' %}"> ВСЕ ТЕГИ</a>
     <ul class="blog-list">
         {% for blog in blogs %}
         <li class="blog-item">
@@ -59,6 +73,11 @@
                 <h2 class="blog-title"><a href="{% url 'detail' blog.pk %}" class="blog-link">{{ blog.title }}</a></h2>
                 <p class="blog-description">{{ blog.description }}</p>
                 <p class="blog-date">Published on {{ blog.created_at }}</p>
+                <div class="blog-tags">
+                    {% for tag in blog.tags.all %}
+                        <span class="blog-tag">{{ tag.title }}</span>
+                    {% endfor %}
+                </div>
             </div>
         </li>
         {% endfor %}

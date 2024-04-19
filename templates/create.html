@@ -1,35 +1,29 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Создать запись в блоге</title>
+    <title>Create New Blog Post</title>
+    <style>
+    </style>
 </head>
 <body>
-    <h1>Создать новую запись в блоге</h1>
+    <h1>Create New Blog Post</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="title">Заголовок:</label><br>
-        <input type="text" id="title" name="title"><br><br>
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
         
-        <label for="description">Описание:</label><br>
-        <textarea id="description" name="description"></textarea><br><br>
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" required></textarea><br><br>
         
-        <label for="image">Изображение:</label><br>
-        <input type="file" id="image" name="image"><br><br>
+        <label for="image">Image:</label><br>
+        <input type="file" id="image" name="image" accept="image/*" required><br><br>
         
-        <div class="mb-3">
-            <label for="tags">Теги:</label><br>
-            <select id="tags" name="tags">
-                <option value="" disabled selected>Выберите существующий тег или создайте новый</option>
-                {% for tag in existing_tags %}
-                    <option value="{{ tag }}">{{ tag }}</option>
-                {% endfor %}
-            </select>
-            <input type="text" name="new_tag" placeholder="Новый тег">
-        </div>
+        <label for="tags">Tags (comma-separated):</label><br>
+        <input type="text" id="tags" name="tags" placeholder="Enter tags separated by commas"><br><br>
         
-        <input type="submit" value="Создать">
+        <input type="submit" value="Submit">
     </form>
 </body>
 </html>
