@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+</head>
+<body>
+    <h1>Регистрация</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <div>
+            <label for="username">Имя пользователя:</label>
+            <input type="text" name="username" id="username" required>
+        </div>
+        <div>
+            <label for="nick">Ник:</label>
+            <input type="text" name="nick" id="nick" required>
+        </div>
+        <div>
+            <label for="avatar">Аватар:</label>
+            <input type="file" name="avatar" id="avatar" accept="image/*" required>
+        </div>
+        <div>
+            <label for="bio">Биография:</label>
+            <textarea name="bio" id="bio" rows="3" required></textarea>
+        </div>
+        <div>
+            <label for="password_1">Пароль:</label>
+            <input type="password" name="password_1" id="password_1" required>
+        </div>
+        <div>
+            <label for="password_2">Подтвердите пароль:</label>
+            <input type="password" name="password_2" id="password_2" required>
+        </div>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+</body>
+</html>

@@ -3,9 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>НОВОСТИ</title>
+    <title>Новости</title>
     <style>
-        /* Style for the blog list */
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        /* Navigation styles */
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            margin: 0 10px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        /* Blog list styles */
         .blog-list {
             list-style: none;
             padding: 0;
@@ -20,8 +52,8 @@
         }
 
         .blog-image {
-            width: 400px;
-            height: 400px;
+            width: 100%;
+            max-height: 300px; /* Decreased image height */
             object-fit: cover; /* Ensure the image covers the entire space */
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
@@ -58,21 +90,103 @@
             border-radius: 5px;
             margin-right: 5px;
         }
+
+        /* Button styles */
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        /* Adjustments for logged-in users */
+        .logged-in {
+            float: right;
+            padding: 10px;
+            color: #fff;
+            background-color: #4CAF50;
+            border-radius: 5px;
+        }
+
+        /* Search bar styles */
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            width: 50%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #45a049;
+        }
+
     </style>
 </head>
 <body>
-    <a href="{% url 'create' %}" class="create-button">Create New Blog Post</a>
-    <a href="{% url 'tag_index' %}"> ВСЕ ТЕГИ</a>
+    <header>
+        <h1>Новости</h1>
+        {% if user.is_authenticated %}
+            <div class="logged-in">Привет, <span style="font-weight: bold;">{{ user.username }}</span>! 😊</div>
+        {% endif %}
+    </header>
+    <nav>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'registration' %}" class="button"> Регистрация </a>
+            <a href="{% url 'login' %}" class="button"> Войти </a>
+        {% else %}
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button">Выход</button>
+            </form>
+        {% endif %}
+        <a href="{% url 'create' %}" class="button">Создать новый пост</a>
+        <a href="{% url 'tag_index' %}"> Все теги</a>
+    </nav>
+    <div class="search-container">
+        <div class="search_input" id="search_input_box">
+            <div class="container box_1170">
+                <form class="d-flex justify-content-between" action="{% url 'index' %}">
+                    <input type="text" name="words" class="form-control" id="search_input" placeholder="Search Here">
+                    <button type="submit" name="key_word" class="btn">поиск</button>
+                    <span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+                </form>
+            </div>
+        </div>
+    
+    </div>
     <ul class="blog-list">
         {% for blog in blogs %}
         <li class="blog-item">
             <a href="{% url 'detail' blog.pk %}" class="blog-link">
-                <img src="{{ blog.image.url }}" class="blog-image" alt="{{ blog.title }}">
+                <img src="{{ blog.image.url }}" class="blog-image"  alt="{{ blog.title }}">
             </a>
             <div class="blog-content">
                 <h2 class="blog-title"><a href="{% url 'detail' blog.pk %}" class="blog-link">{{ blog.title }}</a></h2>
                 <p class="blog-description">{{ blog.description }}</p>
-                <p class="blog-date">Published on {{ blog.created_at }}</p>
+                <p class="blog-date">Опубликовано: {{ blog.created_at }}</p>
                 <div class="blog-tags">
                     {% for tag in blog.tags.all %}
                         <span class="blog-tag">{{ tag.title }}</span>
@@ -82,20 +196,6 @@
         </li>
         {% endfor %}
     </ul>
-    <style>
-        .create-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .create-button:hover {
-            background-color: #45a049;
-        }
-    </style>
 </body>
 </html>
+

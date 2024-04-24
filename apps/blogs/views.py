@@ -1,11 +1,17 @@
 from django.shortcuts import render,redirect
+from django.db.models import Q
 
 from apps.blogs.models import Blog
 from apps.tags.models import Tag
+from apps.comments.models import Comment
 
 
 def homepage(request):
-    blogs = Blog.objects.all()
+    if 'key_word' in request.GET:
+        key = request.GET.get('words')
+        blogs = Blog.objects.filter(Q(title__icontains=key) | Q(author__username__icontains=key))
+    else:
+        blogs = Blog.objects.all()
     return render(request, 'homepage.html', locals())
 
 
@@ -16,7 +22,7 @@ def create(request):
         photo = request.FILES.get('image')
         tags_input = request.POST.get('tags')
         
-        blog_create = Blog.objects.create(title=name, description=text, image=photo)
+        blog_create = Blog.objects.create(author=request.user, title=name, description=text, image=photo)
         
         if tags_input:
             tags_list = [tag.strip() for tag in tags_input.split(',')]
@@ -26,13 +32,17 @@ def create(request):
         
         return redirect('index')
     
-    return render(request, 'create.html')
+    return render(request, 'blogs/create.html')
 
 
 
 def retrieve(request,pk):
     blogs = Blog.objects.get(id=pk)
-    return render(request,'detail.html',locals())
+    if request.method=='POST':
+        ...
+    
+    return render(request,'blogs/detail.html',locals())
+
 
 
 def update(request, pk):
@@ -69,7 +79,7 @@ def update(request, pk):
     # Передаем данные блога и его тегов в шаблон
     tags = blog.tags.all()
     tag_titles = ', '.join([tag.title for tag in tags])
-    return render(request, 'update.html', {'blog': blog, 'tags': tags, 'tag_titles': tag_titles})
+    return render(request, 'blogs/update.html', {'blog': blog, 'tags': tags, 'tag_titles': tag_titles})
 
 
 
@@ -78,5 +88,6 @@ def destroy(request,pk):
         blog = Blog.objects.get(id=pk)
         blog.delete()
         return redirect('index')
-    return render(request,'delete.html')
+    return render(request,'blogs/delete.html')
+
 

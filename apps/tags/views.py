@@ -9,4 +9,4 @@ def all_posts(request):
 
 def tag_index(request):
     tags = Tag.objects.all()
-    return render(request, 'tag_page.html', locals())
+    return render(request, 'tags/tag_page.html', locals())
