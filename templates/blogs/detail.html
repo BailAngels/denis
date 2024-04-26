@@ -87,6 +87,77 @@
             border-radius: 5px;
             margin-right: 5px;
         }
+
+        /* Comment form styles */
+        .comment-form {
+            margin-top: 20px;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .comment-button {
+            padding: 10px 20px;
+            background-color: #007bff; /* Blue color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .comment-button:hover {
+            background-color: #0056b3; /* Darker shade of blue on hover */
+        }
+
+        /* Comment section styles */
+        .comment-section {
+            margin-top: 20px;
+        }
+
+        .comment {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .comment-text {
+            margin-bottom: 5px;
+        }
+
+        .comment-user {
+            font-style: italic;
+            color: #888;
+        }
+                /* Heart button styles */
+        .heart-button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        /* Heart icon styles */
+        .bi-heart {
+            color: #FF0000; /* Red color */
+            transition: color 0.3s; /* Smooth transition for color change */
+        }
+
+        /* Change heart color on hover */
+        .heart-button:hover .bi-heart {
+            color: #FF5733; /* Lighter shade of red on hover */
+        }
+
+        /* Change heart color on active state (when clicked) */
+        .heart-button:active .bi-heart {
+            color: #8B0000; /* Darker shade of red when active */
+        }
     </style>
 </head>
 <body>
@@ -96,6 +167,20 @@
         {% if blogs.image %}
             <img src="{{ blogs.image.url }}" alt="Blog Image">
         {% endif %}
+        <!-- like button -->
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" name="like" class="heart-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M12.342 2.616a3.245 3.245 0 0 0-4.584 0l-.672.671-.671-.671a3.245 3.245 0 0 0-4.584 4.588l.671.671 4.584 4.586 4.584-4.586.672-.671a3.245 3.245 0 0 0 0-4.588z"/>
+                    </svg>
+                </button>
+            </form>
+                    
+            <div class="ml-3">
+                </i>{{ blogs.blog_like.all.count }} people like this
+            </div>
+
         {% for tag in blogs.tags.all %}
             <span class="blog-tag">{{ tag.title }}</span>
         {% endfor %}
@@ -103,6 +188,24 @@
             <a href="{% url 'index' %}" class="back-link">Back to All Blogs</a>
             <a href="{% url 'update' blogs.pk %}" class="update-button">Update</a>
             <a href="{% url 'delete' blogs.pk %}" class="delete-button">Delete</a>
+        </div>
+
+        <!-- Comment Form -->
+        <form class="comment-form" method="post" action="{% url 'detail' blogs.pk %}">
+            {% csrf_token %}
+            <textarea name="text" class="comment-input" placeholder="Напишите комментарий..." required></textarea>
+            <button type="submit" name="comment" class="comment-button">Отправить</button>
+        </form>
+
+        <!-- Comment Section -->
+        <div class="comment-section">
+            <h2>Комментарии</h2>
+            {% for comment in blogs.comments.all %}
+                <div class="comment">
+                    <p class="comment-text">{{ comment.text }}</p>
+                    <p class="comment-user">Пользователь: {{ comment.user.username }}</p>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </body>

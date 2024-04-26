@@ -33,4 +33,19 @@ class Blog(models.Model):
         verbose_name = 'Блог'
         verbose_name_plural = 'Блоги'
 
-    
+
+class BlogLike(models.Model):
+    blog = models.ForeignKey(
+        Blog,
+        on_delete=models.CASCADE,
+        related_name='blog_like',
+        verbose_name='блог',
+    )
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='пользователь',
+    )
+
+    def __str__(self):
+        return self.blog.title

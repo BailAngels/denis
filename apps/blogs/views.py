@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.db.models import Q
+from django.contrib import messages
 
-from apps.blogs.models import Blog
+from apps.blogs.models import Blog, BlogLike
 from apps.tags.models import Tag
 from apps.comments.models import Comment
 
@@ -39,7 +40,19 @@ def create(request):
 def retrieve(request,pk):
     blogs = Blog.objects.get(id=pk)
     if request.method=='POST':
-        ...
+        if 'like' in request.POST:
+            try:
+                like = BlogLike.objects.get(user = request.user, blog = blogs)
+                like.delete()
+            except:
+                BlogLike.objects.create(user = request.user, blog = blogs)
+        if 'comment' in request.POST:
+            try:
+                text = request.POST['text']
+                comment_create = Comment.objects.create(user = request.user, blog = blogs, text = text)
+                return redirect('detail', blogs.id)
+            except:            
+                messages.error(request, 'ошибка у вас')
     
     return render(request,'blogs/detail.html',locals())
 
