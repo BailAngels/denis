@@ -4,7 +4,7 @@ from django.contrib import messages
 
 from apps.blogs.models import Blog, BlogLike
 from apps.tags.models import Tag
-from apps.comments.models import Comment
+from apps.comments.models import Comment, CommentLike
 
 
 def homepage(request):
@@ -53,7 +53,21 @@ def retrieve(request,pk):
                 return redirect('detail', blogs.id)
             except:            
                 messages.error(request, 'ошибка у вас')
-    
+        if 'like_com' in request.POST:
+            id = int(request.POST["like_com"])
+            comment = Comment.objects.get(id=id)
+            try:
+                like_com = CommentLike.objects.get(user = request.user, comment = comment)
+                like_com.delete()
+            except:
+                CommentLike.objects.create(user = request.user, comment = comment)
+        if 'parent_com' in request.POST:
+            id = int(request.POST['parent_com'])
+            comment = Comment.objects.get(id=id)
+            text = request.POST['text']
+            comment_create = Comment.objects.create(user = request.user, blog = blogs, text = text, parent = comment)
+            return redirect('detail', blogs.id)
+        
     return render(request,'blogs/detail.html',locals())
 
 

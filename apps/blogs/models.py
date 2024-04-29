@@ -42,8 +42,7 @@ class BlogLike(models.Model):
         verbose_name='блог',
     )
     user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
+        User,     on_delete=models.CASCADE,
         verbose_name='пользователь',
     )
 

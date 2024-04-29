@@ -205,6 +205,42 @@
                     <p class="comment-text">{{ comment.text }}</p>
                     <p class="comment-user">Пользователь: {{ comment.user.username }}</p>
                 </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="like_com" class="heart-button" value="{{comment.id}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M12.342 2.616a3.245 3.245 0 0 0-4.584 0l-.672.671-.671-.671a3.245 3.245 0 0 0-4.584 4.588l.671.671 4.584 4.586 4.584-4.586.672-.671a3.245 3.245 0 0 0 0-4.588z"/>
+                        </svg>
+                    </button>
+                </form>
+                        
+                <div class="ml-3">
+                    </i>{{ comment.comment_like.all.count }} people like this
+                </div>
+
+                <form class="comment-form" method="post" action="{% url 'detail' blogs.pk %}">
+                    {% csrf_token %}
+                    <textarea name="text" class="comment-input" placeholder="Напишите комментарий..." required></textarea>
+                    <button type="submit" name="comment" class="comment-button">Отправить</button>
+                </form>
+                {% for com_com in comment.parent.all %}
+                    <div class="comment">
+                        <p class="comment-text">{{ com_com.text }}</p>
+                        <p class="comment-user">Пользователь: {{ com_com.user.username }}</p>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="like_com" class="heart-button" value="{{com_com.id}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M12.342 2.616a3.245 3.245 0 0 0-4.584 0l-.672.671-.671-.671a3.245 3.245 0 0 0-4.584 4.588l.671.671 4.584 4.586 4.584-4.586.672-.671a3.245 3.245 0 0 0 0-4.588z"/>
+                            </svg>
+                        </button>
+                    </form>
+                            
+                    <div class="ml-3">
+                        </i>{{ com_com.comment_like.all.count }} people like this
+                    </div>
+                {% endfor %}
             {% endfor %}
         </div>
     </div>
