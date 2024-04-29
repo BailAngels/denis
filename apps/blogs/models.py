@@ -41,7 +41,7 @@ class BlogLike(models.Model):
         related_name='blog_like',
         verbose_name='блог',
     )
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name='пользователь',
